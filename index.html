@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>For My Bebegurl 💙</title>
+  <style>
+    :root {
+      --blue-1: #0f1f3a;
+      --blue-2: #1a3d72;
+      --blue-3: #9dc6ff;
+      --soft: #f3f8ff;
+      --door-fallback-1: #5477a4;
+      --door-fallback-2: #85a6cc;
+      --heart: #ff9ec9;
+      --chat: #deedff;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+      color: var(--soft);
+      background: radial-gradient(circle at 20% 10%, var(--blue-3), var(--blue-2) 46%, var(--blue-1));
+      display: grid;
+      place-items: center;
+      padding: 14px;
+      overflow: hidden;
+    }
+
+    .app {
+      width: min(96vw, 460px);
+      aspect-ratio: 9/16;
+      border-radius: 24px;
+      overflow: hidden;
+      position: relative;
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+      box-shadow: 0 20px 55px rgba(7, 16, 32, .45), inset 0 0 26px rgba(180, 220, 255, .2);
+      backdrop-filter: blur(6px);
+    }
+
+    .screen {
+      position: absolute;
+      inset: 0;
+      transition: opacity .9s ease, transform .9s ease;
+    }
+
+    .intro {
+      display: grid;
+      grid-template-rows: 1fr auto;
+      padding: 20px;
+      background: linear-gradient(180deg, #213f69, #172b48 68%);
+      z-index: 6;
+    }
+
+    .intro.hidden {
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(.97);
+    }
+
+    .bedroom {
+      border-radius: 18px;
+      background: radial-gradient(circle at 70% 18%, rgba(210,230,255,.3), transparent 42%),
+                  linear-gradient(180deg, #335987, #203a5d 70%);
+      position: relative;
+      overflow: hidden;
+      box-shadow: inset 0 0 16px rgba(255,255,255,.2);
+    }
+
+    .moon {
+      position: absolute;
+      top: 24px;
+      right: 28px;
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      background: #e5f1ff;
+      box-shadow: 0 0 22px rgba(222, 238, 255, .9);
+    }
+
+    .bed {
+      position: absolute;
+      left: 26px;
+      right: 26px;
+      bottom: 34px;
+      height: 120px;
+      border-radius: 22px;
+      background: linear-gradient(180deg, #7599c7, #4f74a3);
+      box-shadow: inset 0 0 10px rgba(255,255,255,.28);
+    }
+
+    .pillow {
+      position: absolute;
+      left: 18px;
+      top: 14px;
+      width: 96px;
+      height: 46px;
+      border-radius: 14px;
+      background: #dcecff;
+    }
+
+    .intro-text {
+      margin-top: 16px;
+      text-align: center;
+      line-height: 1.45;
+      text-shadow: 0 0 10px rgba(210, 232, 255, .7);
+      font-size: clamp(.95rem, 3.5vw, 1.12rem);
+    }
+
+    .btn {
+      margin: 16px auto 0;
+      border: none;
+      color: #18365e;
+      background: #dbeeff;
+      font-weight: 700;
+      font-size: .95rem;
+      padding: 11px 18px;
+      border-radius: 999px;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(5, 19, 38, .35);
+    }
+
+    .house {
+      opacity: 0;
+      transform: translateY(14px);
+      pointer-events: none;
+      z-index: 3;
+      background: linear-gradient(180deg, #2a4e7a, #13253d);
+    }
+
+    .house.show {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    .message {
+      position: absolute;
+      top: 16px;
+      width: 100%;
+      text-align: center;
+      font-size: clamp(1rem, 3.6vw, 1.22rem);
+      z-index: 5;
+      padding: 0 10px;
+      text-shadow: 0 0 10px rgba(204, 225, 255, .8);
+    }
+
+    .house-shape {
+      position: absolute;
+      left: 50%;
+      bottom: 70px;
+      transform: translateX(-50%);
+      width: min(88%, 370px);
+      height: 66%;
+      background: linear-gradient(180deg, #365b88, #223d62 70%);
+      border-radius: 18px;
+      box-shadow: inset 0 0 20px rgba(255,255,255,.16);
+      overflow: hidden;
+    }
+
+    .roof {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: -80px;
+      width: 0;
+      height: 0;
+      border-left: 195px solid transparent;
+      border-right: 195px solid transparent;
+      border-bottom: 90px solid #2b476f;
+    }
+
+    .door-wrap {
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      transform: translateX(-50%);
+      width: 48%;
+      height: 70%;
+      perspective: 1200px;
+    }
+
+    .door {
+      position: absolute;
+      inset: 0;
+      transform-origin: left center;
+      border-radius: 14px 14px 0 0;
+      cursor: pointer;
+      background: linear-gradient(130deg, var(--door-fallback-1), var(--door-fallback-2));
+      background-image: url('door.png'), linear-gradient(130deg, var(--door-fallback-1), var(--door-fallback-2));
+      background-size: cover;
+      background-position: center;
+      box-shadow: inset 0 0 12px rgba(255,255,255,.25), inset -10px 0 16px rgba(30, 47, 69, .45);
+      animation: knock 1.2s ease-in-out infinite;
+      transition: transform 2.8s cubic-bezier(.18,.9,.25,1);
+      z-index: 4;
+    }
+
+    .door.open { transform: rotateY(-124deg); animation: none; }
+
+    @keyframes knock {
+      0%,50%,100% { transform: rotateY(0deg); }
+      16% { transform: rotateY(2.2deg); }
+      28% { transform: rotateY(-1.3deg); }
+      40% { transform: rotateY(2.2deg); }
+    }
+
+    .inside {
+      position: absolute;
+      inset: 0;
+      border-radius: 14px 14px 0 0;
+      background: linear-gradient(180deg, #2f5077, #1b2f4a 70%);
+      display: grid;
+      place-items: end center;
+      padding-bottom: 18px;
+      overflow: hidden;
+    }
+
+    .cat-holder {
+      position: relative;
+      width: min(88%, 250px);
+      opacity: 0;
+      transform: translateY(14px) scale(.95);
+      transition: 1.2s ease 1.1s;
+      z-index: 2;
+    }
+
+    .house.opened .cat-holder {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    .cat {
+      width: 100%;
+      display: block;
+      object-fit: contain;
+      filter: drop-shadow(0 8px 12px rgba(0,0,0,.35));
+      user-select: none;
+      pointer-events: none;
+    }
+
+    /* bigger flowers */
+    .bouquet {
+      position: absolute;
+      width: 118px;
+      pointer-events: none;
+      filter: drop-shadow(0 6px 10px rgba(0,0,0,.35));
+    }
+    .bouquet.left { left: -42px; top: 44%; transform: rotate(-12deg); }
+    .bouquet.right { right: -42px; top: 44%; transform: scaleX(-1) rotate(-12deg); }
+
+    .chat {
+      position: absolute;
+      left: 50%;
+      bottom: 222px;
+      transform: translateX(-50%) scale(.9);
+      opacity: 0;
+      max-width: 86%;
+      text-align: center;
+      background: var(--chat);
+      color: #203c63;
+      border-radius: 16px;
+      padding: 10px 14px;
+      font-size: clamp(.84rem, 2.8vw, .98rem);
+      box-shadow: 0 10px 18px rgba(13,27,45,.35);
+      transition: opacity .9s ease 1.7s, transform .9s ease 1.7s;
+      z-index: 3;
+    }
+    .chat::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: -8px;
+      width: 16px;
+      height: 16px;
+      background: var(--chat);
+      transform: translateX(-50%) rotate(45deg);
+    }
+    .house.opened .chat { opacity: 1; transform: translateX(-50%) scale(1); }
+
+    .heart {
+      position: absolute;
+      bottom: -20px;
+      width: 14px;
+      height: 14px;
+      background: var(--heart);
+      transform: rotate(45deg);
+      animation: float 8s linear infinite;
+      z-index: 1;
+    }
+    .heart::before, .heart::after {
+      content: "";
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--heart);
+    }
+    .heart::before { left: -7px; }
+    .heart::after { top: -7px; }
+    @keyframes float {
+      from { transform: translateY(0) rotate(45deg) scale(.9); opacity: 0; }
+      20% { opacity: .95; }
+      to { transform: translateY(-560px) rotate(45deg) scale(1.15); opacity: 0; }
+    }
+
+    .hint {
+      position: absolute;
+      bottom: 12px;
+      width: 100%;
+      text-align: center;
+      font-size: .84rem;
+      color: rgba(236,246,255,.95);
+      z-index: 5;
+    }
+
+    .hidden { display: none; }
+
+    @media (max-width: 420px) {
+      .roof { border-left-width: 165px; border-right-width: 165px; }
+      .chat { bottom: 205px; }
+      .bouquet { width: 102px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="app" id="app">
+    <section class="screen intro" id="introScreen">
+      <div class="bedroom">
+        <div class="moon"></div>
+        <div class="bed">
+          <div class="pillow"></div>
+        </div>
+      </div>
+      <div>
+        <p class="intro-text">You were laying in bed under the soft blue night... then suddenly, you hear a knock at your door. 💙</p>
+        <button class="btn" id="walkBtn">Walk to the door</button>
+      </div>
+    </section>
+
+    <section class="screen house" id="houseScreen">
+      <p class="message" id="statusText">Someone is knocking…</p>
+      <div class="house-shape">
+        <div class="roof"></div>
+        <div class="door-wrap">
+          <div class="inside">
+            <div class="chat" id="chatBubble">hey bebegurl its me plawers por u💙</div>
+            <div class="cat-holder" id="catHolder">
+              <img class="cat" src="me.png" alt="Cute cat bringing flowers" />
+              <img class="bouquet left" src="flower1.png" alt="Lily bouquet in left paw" />
+              <img class="bouquet right" src="flower2.png" alt="Daisy bouquet in right paw" />
+            </div>
+          </div>
+          <div class="door" id="door" role="button" aria-label="Open the door" tabindex="0"></div>
+        </div>
+      </div>
+      <p class="hint" id="hint">Tap the door to open 💫</p>
+    </section>
+
+    <audio id="snoringAudio" src="snoring.mp3" preload="auto" loop></audio>
+    <audio id="knockAudio" src="knocking.mp3" preload="auto" loop></audio>
+    <audio id="meowAudio" src="meow.mp3" preload="auto"></audio>
+    <audio id="romanticAudio" src="romantic.mp3" preload="auto"></audio>
+  </main>
+
+  <script>
+    const introScreen = document.getElementById('introScreen');
+    const houseScreen = document.getElementById('houseScreen');
+    const walkBtn = document.getElementById('walkBtn');
+    const door = document.getElementById('door');
+    const statusText = document.getElementById('statusText');
+    const hint = document.getElementById('hint');
+    const app = document.getElementById('app');
+    const snoringAudio = document.getElementById('snoringAudio');
+    const knockAudio = document.getElementById('knockAudio');
+    const meowAudio = document.getElementById('meowAudio');
+    const romanticAudio = document.getElementById('romanticAudio');
+
+    let opened = false;
+    let heartTimer = null;
+
+    snoringAudio.play().catch(() => {
+      // may require first user interaction
+    });
+
+    function makeHeart() {
+      const h = document.createElement('span');
+      h.className = 'heart';
+      h.style.left = Math.random() * 100 + '%';
+      h.style.animationDuration = (5.8 + Math.random() * 3.5) + 's';
+      h.style.opacity = (0.45 + Math.random() * 0.5).toFixed(2);
+      app.appendChild(h);
+      setTimeout(() => h.remove(), 9500);
+    }
+
+    function startKnocking() {
+      knockAudio.currentTime = 0;
+      knockAudio.play().catch(() => {
+        // Browser may block autoplay until interaction; this function is user-triggered.
+      });
+    }
+
+    walkBtn.addEventListener('click', () => {
+      introScreen.classList.add('hidden');
+      houseScreen.classList.add('show');
+      snoringAudio.pause();
+      snoringAudio.currentTime = 0;
+      startKnocking(); // user requested knocking.mp3 to play on click
+    });
+
+    function openDoor() {
+      if (opened) return;
+      opened = true;
+      door.classList.add('open');
+      houseScreen.classList.add('opened');
+      statusText.textContent = 'hey bebegurl its me 💙';
+      hint.classList.add('hidden');
+
+      knockAudio.pause();
+      knockAudio.currentTime = 0;
+
+      meowAudio.currentTime = 0;
+      meowAudio.play().catch(() => {
+        // short reveal sound
+      });
+
+      romanticAudio.currentTime = 0;
+      romanticAudio.play().catch(() => {
+        // playback could still be blocked on strict settings
+      });
+
+      heartTimer = setInterval(makeHeart, 430);
+      setTimeout(() => clearInterval(heartTimer), 12000);
+    }
+
+    door.addEventListener('click', openDoor);
+    door.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openDoor();
+      }
+    });
+  </script>
+</body>
+</html>
